@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Seth Sandaru Music Central</title>
+
+    <link href="./src/assets/css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+    <link href="./src/assets/css/style.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="./src/assets/css/jquery-ui.css" />
+    <link rel="stylesheet" href="./src/assets/css/smoothbox.css" type='text/css' media="all" />
+    <link rel="stylesheet" href="./src/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="./src/assets/css/toastr.min.css" />
+    <script type='text/javascript' src='./src/assets/js/jquery-2.2.3.min.js'></script>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Bitter:400,400i,700&subset=latin-ext" rel="stylesheet">
+    <script type="text/javascript" src="./src/assets/js/slide-from-top.js"></script>
+    <script type="text/javascript" src="./src/assets/js/toastr.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.mobile-side-menu').slideFromTop({
+          menuBtn: $('.toggleMenu'),
+          navbar: $('.navbar'),
+          menuSpeed: 500,
+          bodyOverlay: $('.overlay')
+        });
+      });
+    </script>
+  </head>
+  <body class="bg">
+    <div id="app"></div>
+    <script src="/dist/build.js"></script>
+  </body>
+</html>
