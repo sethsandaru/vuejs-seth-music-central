@@ -10,6 +10,6 @@ export const url = {
 
     getURL(method = "")
     {
-        return config.app_name + controller + (method !== "" ? "/" + method : "");
+        return config.api_url + this.controller + (method !== "" ? "/" + method : "");
     }
 };

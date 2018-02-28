@@ -4,5 +4,5 @@ export const config = {
     instagram_url: "https://instagram.com/sethsandaru",
 
     // api url here
-    api_url: "http://acb.xyz/api/",
+    api_url: "http://localhost/music-central-api/public/api/",
 };

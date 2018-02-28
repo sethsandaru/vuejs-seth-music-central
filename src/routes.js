@@ -7,6 +7,7 @@ import HomePage from './components/pages/HomePage.vue';
 import GenrePage from './components/pages/GenrePage.vue';
 import LoginPage from './components/pages/LoginPage.vue';
 import RegisterPage from './components/pages/RegisterPage.vue';
+import SearchPage from './components/pages/SearchPage.vue';
 
 
 // define route
@@ -24,6 +25,9 @@ export const router = new VueRouter({
         },
         {
             path: '/register', component: RegisterPage
+        },
+        {
+            path: '/search', component: SearchPage
         }
     ]
 });

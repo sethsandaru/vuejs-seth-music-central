@@ -5,17 +5,9 @@
                 <h4 class="card-title">HOT IN WEEK</h4>
 
                 <ul class="list-group">
-                    <li class="list-group-item">
-                        <p class="title">Machine</p>
-                        <p class="artist">Pandora</p>
-                    </li>
-                    <li class="list-group-item">
-                        <p class="title">What you deserved</p>
-                        <p class="artist">No Resolve</p>
-                    </li>
-                    <li class="list-group-item">
-                        <p class="title">Secret</p>
-                        <p class="artist">Our Waking Hour</p>
+                    <li class="list-group-item" v-for="item in weekly_high">
+                        <p class="title">{{item.music_name}}</p>
+                        <p class="artist">{{item.artist}}</p>
                     </li>
                 </ul>
             </div>
@@ -24,17 +16,9 @@
             <h4 class="card-title">NEWEST</h4>
 
             <ul class="list-group">
-              <li class="list-group-item">
-                <p class="title">Machine</p>
-                <p class="artist">Pandora</p>
-              </li>
-              <li class="list-group-item">
-                <p class="title">What you deserved</p>
-                <p class="artist">No Resolve</p>
-              </li>
-              <li class="list-group-item">
-                <p class="title">Secret</p>
-                <p class="artist">Our Waking Hour</p>
+              <li class="list-group-item" v-for="item in newest">
+                <p class="title">{{item.music_name}}</p>
+                <p class="artist">{{item.artist}}</p>
               </li>
             </ul>
           </div>
@@ -43,17 +27,9 @@
             <h4 class="card-title">MOST VIEWED</h4>
 
             <ul class="list-group">
-              <li class="list-group-item">
-                <p class="title">Machine</p>
-                <p class="artist">Pandora</p>
-              </li>
-              <li class="list-group-item">
-                <p class="title">What you deserved</p>
-                <p class="artist">No Resolve</p>
-              </li>
-              <li class="list-group-item">
-                <p class="title">Secret</p>
-                <p class="artist">Our Waking Hour</p>
+              <li class="list-group-item" v-for="item in alltime_high">
+                <p class="title">{{item.music_name}}</p>
+                <p class="artist">{{item.artist}}</p>
               </li>
             </ul>
           </div>
@@ -62,8 +38,34 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    import {url} from "../../helper";
+
     export default {
-        name: "home-page"
+        data()
+        {
+            return {
+                'weekly_high': [],
+                'alltime_high': [],
+                'newest': []
+            }
+        },
+        created()
+        {
+            // get high weekly
+            url.setController('Music')
+            axios.get(url.getURL('GetHomePageData'))
+              .then(res => {
+                  this.weekly_high = res.data.weekly;
+                  this.alltime_high = res.data.alltime;
+                  this.newest = res.data.newest;
+              })
+              .catch(err => {
+                  toastr.error('Failed to load music...');
+              });
+
+
+        }
     }
 </script>
 

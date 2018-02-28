@@ -4,14 +4,12 @@
       <div class="overlay"></div>
       <div class="mobile-side-menu">
         <ul>
-          <li class="active"><a href="main.html"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
-          <li><a href="menu.html"><i class="fa fa-compass" aria-hidden="true"></i>Our Food</a></li>
-          <li><a href="blog.html"><i class="fa fa-picture-o" aria-hidden="true"></i>Blog</a></li>
-          <li><a href="team.html"><i class="fa fa-users" aria-hidden="true"></i>Our Chef</a></li>
-          <li><a href="short-codes.html"><i class="fa fa-dashcube" aria-hidden="true"></i>Short Codes</a></li>
-          <li><a href="icons.html"><i class="fa fa-random" aria-hidden="true"></i>Web Icons</a></li>
-          <li><a href="contact.html"><i class="fa fa-map-marker" aria-hidden="true"></i>Location</a></li>
-          <li><a href="sign-in.html"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+          <li class="active"><a href="./"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
+          <li v-for="item in $store.state.genres">
+            <router-link :to="url_genre(item.genre_id)">
+              <i class="fa fa-compass" aria-hidden="true"></i> {{item.genre_name}}
+            </router-link>
+          </li>
         </ul>
       </div>
       <div class="navbar">
@@ -26,6 +24,9 @@
               <li><a v-bind:href="config.facebook_url" class="w3_agileits_facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
               <li><a v-bind:href="config.instagram_url" class="w3_agileits_twitter"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
               <li><router-link to="/search" class="w3_agileits_google"><i class="fa fa-search" aria-hidden="true"></i></router-link></li>
+              <li>
+                  <a class="w3_agileits_facebook dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i></a>
+              </li>
             </ul>
           </div>
           <div class="clearfix"> </div>
@@ -77,6 +78,7 @@
 
 <script>
   import {config} from "./config";
+  import store from './store';
 
   export default {
     name: 'app',
@@ -84,6 +86,17 @@
       return {
         config: config
       }
+    },
+    methods: {
+      url_genre(id)
+      {
+        return '/genre/' + id;
+      }
+    },
+    created()
+    {
+        // load genre
+        store.dispatch('getGenre');
     },
     mounted()
     {
