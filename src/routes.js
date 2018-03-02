@@ -8,6 +8,7 @@ import GenrePage from './components/pages/GenrePage.vue';
 import LoginPage from './components/pages/LoginPage.vue';
 import RegisterPage from './components/pages/RegisterPage.vue';
 import SearchPage from './components/pages/SearchPage.vue';
+import MusicPage from './components/pages/MusicPage.vue';
 
 
 // define route
@@ -28,6 +29,9 @@ export const router = new VueRouter({
         },
         {
             path: '/search', component: SearchPage
-        }
+        },
+        {
+            path: '/music/:id', component: MusicPage
+        },
     ]
 });

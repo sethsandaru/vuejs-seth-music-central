@@ -5,7 +5,7 @@
                 <h4 class="card-title">HOT IN WEEK</h4>
 
                 <ul class="list-group">
-                    <li class="list-group-item" v-for="item in weekly_high">
+                    <li class="list-group-item" v-for="item in weekly_high" @click="view_music(item.music_id)">
                         <p class="title">{{item.music_name}}</p>
                         <p class="artist">{{item.artist}}</p>
                     </li>
@@ -16,7 +16,7 @@
             <h4 class="card-title">NEWEST</h4>
 
             <ul class="list-group">
-              <li class="list-group-item" v-for="item in newest">
+              <li class="list-group-item" v-for="item in newest" @click="view_music(item.music_id)">
                 <p class="title">{{item.music_name}}</p>
                 <p class="artist">{{item.artist}}</p>
               </li>
@@ -27,7 +27,7 @@
             <h4 class="card-title">MOST VIEWED</h4>
 
             <ul class="list-group">
-              <li class="list-group-item" v-for="item in alltime_high">
+              <li class="list-group-item" v-for="item in alltime_high" @click="view_music(item.music_id)">
                 <p class="title">{{item.music_name}}</p>
                 <p class="artist">{{item.artist}}</p>
               </li>
@@ -65,6 +65,12 @@
               });
 
 
+        },
+        methods: {
+            view_music(id)
+            {
+                window.location = "#/music/" + id;
+            }
         }
     }
 </script>

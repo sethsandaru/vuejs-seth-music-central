@@ -11,5 +11,5 @@ export const url = {
     getURL(method = "")
     {
         return config.api_url + this.controller + (method !== "" ? "/" + method : "");
-    }
+    },
 };
