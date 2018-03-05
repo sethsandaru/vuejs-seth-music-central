@@ -4,7 +4,17 @@
       <div class="overlay"></div>
       <div class="mobile-side-menu">
         <ul>
-          <li class="active"><a href="./"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
+          <li class="active"><router-link to="/"><i class="fa fa-home" aria-hidden="true"></i>Home</router-link></li>
+          <li v-for="item in $store.state.genres">
+            <router-link :to="url_genre(item.genre_id)">
+              <i class="fa fa-compass" aria-hidden="true"></i> {{item.genre_name}}
+            </router-link>
+          </li>
+        </ul>
+      </div>
+      <div class="mobile-side-menu from-right">
+        <ul>
+          <li class="active"><router-link to="/"><i class="fa fa-home" aria-hidden="true"></i>Home</router-link></li>
           <li v-for="item in $store.state.genres">
             <router-link :to="url_genre(item.genre_id)">
               <i class="fa fa-compass" aria-hidden="true"></i> {{item.genre_name}}
@@ -16,7 +26,7 @@
         <div class="agile_container">
           <div class="w3_agile_nav_main_left">
             <div class="toggleMenu">
-              <a href="#"> <i class="fa fa-navicon"></i> </a>
+              <a href="javascript:void(0);"> <i class="fa fa-navicon"></i> </a>
             </div>
           </div>
           <div class="w3_agile_nav_main_right">
@@ -25,7 +35,8 @@
               <li><a v-bind:href="config.instagram_url" class="w3_agileits_twitter"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
               <li><router-link to="/search" class="w3_agileits_google"><i class="fa fa-search" aria-hidden="true"></i></router-link></li>
               <li>
-                  <a class="w3_agileits_facebook dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i></a>
+                  <a class="w3_agileits_facebook dropdown-toggle" @click="userSidebar = !userSidebar"
+                     data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i></a>
               </li>
             </ul>
           </div>
@@ -35,7 +46,7 @@
     </div>
     <div class="agileinfo_logo">
       <div class="agile_container">
-        <h1><a href="./">{{config.app_name}}</a></h1>
+        <h1><router-link to="/">{{config.app_name}}</router-link></h1>
       </div>
     </div>
 
@@ -43,7 +54,6 @@
     <div class="container">
       <router-view></router-view>
     </div>
-
 
 
     <div class="footer">
@@ -84,7 +94,8 @@
     name: 'app',
     data() {
       return {
-        config: config
+        config: config,
+        userSidebar: false
       }
     },
     methods: {
