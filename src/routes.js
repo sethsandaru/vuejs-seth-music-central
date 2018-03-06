@@ -10,6 +10,7 @@ import RegisterPage from './components/pages/RegisterPage.vue';
 import SearchPage from './components/pages/SearchPage.vue';
 import MusicPage from './components/pages/MusicPage.vue';
 import LogoutPage from './components/pages/LogoutPage.vue';
+import MyPlaylistPage from './components/pages/MyPlaylistPage.vue';
 
 
 // define route
@@ -37,5 +38,8 @@ export const router = new VueRouter({
         {
             path: '/music/:id', component: MusicPage
         },
+        {
+            path: '/playlist', component: MyPlaylistPage
+        }
     ]
 });

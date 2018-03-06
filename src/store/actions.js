@@ -10,6 +10,14 @@ export const removeUser = ({commit}) => {
     commit(types.REMOVE_USER);
 };
 
+export const addUserPlaylist = ({commit}, playlist) => {
+    commit(types.ADD_USER_PLAYLIST, playlist);
+};
+
+export const addMusicPlaylist = ({commit}, index) => {
+    commit(types.ADD_MUSIC_PLAYLIST, index);
+};
+
 
 // genre
 export const getGenre = ({commit}) => {

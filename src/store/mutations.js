@@ -9,6 +9,12 @@ export const mutations = {
     {
         state.user = null;
     },
+    [types.ADD_USER_PLAYLIST] (state, playlist) {
+        state.user.playlists.push(playlist);
+    },
+    [types.ADD_MUSIC_PLAYLIST] (state, index) {
+        state.user.playlists[index].up_total_songs++;
+    },
 
     // GENRES
     [types.SET_GENRES] (state, genres)

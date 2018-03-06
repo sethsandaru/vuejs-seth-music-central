@@ -1,12 +1,16 @@
 <template>
-    <div>
-        ID Genre: {{$route.params.id}}
+    <div class="row">
+        <h3></h3>
     </div>
 </template>
 
 <script>
     export default {
-        name: "genre-page"
+        created()
+        {
+            // TODO: Get newest music in this genre
+            // TODO: Get most viewed music in this genre
+        }
     }
 </script>
 

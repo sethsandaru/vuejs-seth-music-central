@@ -14,10 +14,10 @@
             <button class="btn btn-primary" type="button" data-toggle="dropdown">Add to playlists <span class="caret"></span></button>
 
             <ul class="dropdown-menu">
-              <li v-for="item in $store.state.user.playlists">
-                <a href="#"><i class="fa fa-music"></i> {{item.up_name}} - Songs: {{item.up_total_songs}}</a>
+              <li v-for="(item, index) in $store.state.user.playlists">
+                <a style="cursor: pointer" @click="add_music_to_playlist(item.up_id, index)"><i class="fa fa-music"></i> {{item.up_name}} - Songs: {{item.up_total_songs}}</a>
               </li>
-              <li><a><i class="fa fa-plus"></i> Create new playlist</a></li>
+              <li><a style="cursor: pointer" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Create new playlist</a></li>
             </ul>
         </div>
 
@@ -28,6 +28,31 @@
             <div class="panel-body">
                 <pre>{{music.lyric}}</pre>
             </div>
+        </div>
+
+        <!-- Add new playlist modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add new playlist</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label>Playlist name/title:</label>
+                  <input type="text" class="form-control" v-model="up_title">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" @click="create_playlist">Save</button>
+              </div>
+            </div>
+
+          </div>
         </div>
     </div>
 </template>
@@ -45,6 +70,7 @@
                 music: {},
                 isYoutube: false,
                 youtube_id: "",
+                up_title: ""
             }
         },
         created()
@@ -100,6 +126,55 @@
                   url.setController('Music');
                   return url.getURL('MusicFile') + "/" + file_name;
                 }
+            },
+            create_playlist()
+            {
+              if (this.up_title == "")
+              {
+                toastr.error("Please input all information!");
+                return;
+              }
+
+              url.setController('UserPlaylist');
+              axios.post(url.getURL('CreatePlaylist') + "/" + this.$store.state.user.id, {title: this.up_title})
+                .then(res => {
+                  var data = res.data;
+
+                  if (data.error)
+                  {
+                    toastr.error(data.error);
+                  }
+                  else {
+                    toastr.success("Create playlist successfully!");
+                    this.$store.dispatch('addUserPlaylist', data);
+
+                    $("#myModal").modal('hide');
+                    this.up_title = "";
+                  }
+                })
+                .catch(err => {
+                  toastr.error("Failed to create playlist, please try again!");
+                });
+            },
+            add_music_to_playlist(playlist_id, index)
+            {
+                url.setController('UserPlaylist');
+                axios.post(url.getURL('AddMusicToPlaylist') + "/" + playlist_id, {music_id: this.id})
+                  .then(res => {
+                      var data = res.data;
+
+                      if (data.error)
+                      {
+                          toastr.error(data.error);
+                      }
+                      else {
+                          toastr.success("Add this music to playlist successfully!");
+                          this.$store.dispatch('addMusicPlaylist', index);
+                      }
+                  })
+                  .catch(err => {
+                      toastr.error("Add to playlist failed, please try again!");
+                  });
             }
         }
     }
