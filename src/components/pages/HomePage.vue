@@ -40,6 +40,7 @@
 <script>
     import axios from 'axios'
     import {url} from "../../helper";
+    import {config} from "../../config";
 
     export default {
         data()
@@ -52,6 +53,8 @@
         },
         created()
         {
+            document.title = "Home page - " + config.app_name;
+
             // get high weekly
             url.setController('Music')
             axios.get(url.getURL('GetHomePageData'))
@@ -76,21 +79,5 @@
 </script>
 
 <style scoped>
-    .list-group-item
-    {
-        cursor: pointer;
-    }
 
-    .card-title {
-        text-align: center;
-    }
-
-    .artist {
-        font-size: 12px;
-    }
-
-    .title {
-        font-size:14px;
-        font-weight: bold;
-    }
 </style>

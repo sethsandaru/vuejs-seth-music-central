@@ -24,6 +24,9 @@
 </template>
 
 <script>
+    import {url} from "../../helper";
+    import axios from 'axios';
+
     export default {
         data()
         {
@@ -42,7 +45,24 @@
                 }
 
                 // login now
+                url.setController('User');
+                axios.post(url.getURL('login'), {email: this.email, password: this.password})
+                  .then(res => {
+                      var data = res.data;
 
+                      if (data.error)
+                      {
+                          toastr.error(data.error, "Login failed");
+                      }
+                      else {
+                          toastr.success("Login successfully!");
+                          this.$store.dispatch('setUser', data.data.user_data);
+                          window.location = "#/";
+                      }
+                  })
+                  .catch(err => {
+                      toastr.error("Request to login failed", "Login failed");
+                  });
             }
         }
     }

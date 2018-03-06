@@ -5,19 +5,19 @@
         <div class="form">
             <div class="form-group">
               <label>Email address</label>
-              <input type="text" class="form-control" v-model="email">
+              <input type="text" class="form-control" v-model="user.email">
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input type="password" class="form-control" v-model="password">
+              <input type="password" class="form-control" v-model="user.password">
             </div>
             <div class="form-group">
               <label>Retype Password</label>
-              <input type="password" class="form-control" v-model="retype_password">
+              <input type="password" class="form-control" v-model="user.retype_password">
             </div>
             <div class="form-group">
               <label>Your name</label>
-              <input type="text" class="form-control" v-model="name">
+              <input type="text" class="form-control" v-model="user.name">
             </div>
 
             <div class="text-center">
@@ -32,27 +32,48 @@
 </template>
 
 <script>
+  import {url} from "../../helper";
+  import axios from 'axios';
+
     export default {
         data()
         {
             return {
-                email: "",
-                password: "",
-                retype_password: "",
-                name: "",
+                user: {
+                  email: "",
+                  password: "",
+                  retype_password: "",
+                  name: "",
+                }
             }
         },
         methods: {
             doLogin()
             {
-                if (this.email == "" || this.password == "" || this.retype_password == "")
+                if (this.email == "" || this.password == "" || this.retype_password == "" || this.name == "")
                 {
                     toastr.error("Please input all the needed information, thanks!", "Login failed");
                     return;
                 }
 
-                // login now
+                // register now
+                url.setController('User');
+                axios.post(url.getURL('register'), this.user)
+                  .then(res => {
+                      var data = res.data;
 
+                      if (data.error)
+                      {
+                          toastr.error(data.error, "Register failed");
+                      }
+                      else {
+                          toastr.success('Registered successfully! Please login to continue!', "Register successfully!");
+                          window.location = "#/login";
+                      }
+                  })
+                  .catch(err => {
+                      toastr.error("Failed to register. Please try again later!", "Register failed");
+                  });
             }
         }
     }

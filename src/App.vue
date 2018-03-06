@@ -30,15 +30,46 @@
             </div>
           </div>
           <div class="w3_agile_nav_main_right">
-            <ul class="wthree_social_icons">
+            <ul class="wthree_social_icons" style="position: relative;">
               <li><a v-bind:href="config.facebook_url" class="w3_agileits_facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
               <li><a v-bind:href="config.instagram_url" class="w3_agileits_twitter"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
               <li><router-link to="/search" class="w3_agileits_google"><i class="fa fa-search" aria-hidden="true"></i></router-link></li>
               <li>
                   <a class="w3_agileits_facebook dropdown-toggle" @click="userSidebar = !userSidebar"
-                     data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i></a>
+                     v-bind:class="{'hover-button' : userSidebar}">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                  </a>
               </li>
             </ul>
+
+            <div class="box-people" v-show="userSidebar">
+                <table class="table table-bordered" style="margin: 0;">
+                    <tr v-if="$store.state.user == null">
+                        <td width="15%">
+                          <img src="./assets/images/default_avatar.jpg" alt="Default avatar" class="img-circle avatar">
+                        </td>
+                        <td>
+                            <div class="guest">
+                                <p>Hello guest!</p>
+                                <router-link to="/login" class="btn btn-primary">Login</router-link>
+                                <router-link to="/register" class="btn btn-warning">Register</router-link>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr v-else>
+                        <td width="15%">
+                            <img src="./assets/images/default_avatar.jpg" alt="Default avatar" class="img-circle avatar">
+                        </td>
+                        <td>
+                            <div class="user-logged">
+                                <p>Hello, {{$store.state.user.name}}!</p>
+                                <router-link to="/playlist" class="btn btn-primary">My Playlist</router-link>
+                                <router-link to="/logout" class="btn btn-warning">Log out</router-link>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
           </div>
           <div class="clearfix"> </div>
         </div>
@@ -51,7 +82,7 @@
     </div>
 
 
-    <div class="container">
+    <div class="container" @click="userSidebar = false">
       <router-view></router-view>
     </div>
 

@@ -7,7 +7,7 @@ export const mutations = {
     },
     [types.REMOVE_USER] (state)
     {
-        state.user = {};
+        state.user = null;
     },
 
     // GENRES

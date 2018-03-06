@@ -10,6 +10,17 @@
             <audio v-bind:src="music_url(music.file_url)" preload="auto" style="margin: 0 auto;" />
         </div>
 
+        <div class="dropdown" v-if="$store.state.user != null">
+            <button class="btn btn-primary" type="button" data-toggle="dropdown">Add to playlists <span class="caret"></span></button>
+
+            <ul class="dropdown-menu">
+              <li v-for="item in $store.state.user.playlists">
+                <a href="#"><i class="fa fa-music"></i> {{item.up_name}} - Songs: {{item.up_total_songs}}</a>
+              </li>
+              <li><a><i class="fa fa-plus"></i> Create new playlist</a></li>
+            </ul>
+        </div>
+
         <div class="panel panel-primary" style="margin-top: 20px;">
             <div class="panel-heading">
                 Lyric:
@@ -24,7 +35,7 @@
 <script>
     import axios from 'axios'
     import {url} from "../../helper";
-    import {Howl, Howler} from 'howler';
+    import {config} from "../../config";
 
     export default {
         data()
@@ -43,19 +54,30 @@
             url.setController('Music');
             axios.get(url.getURL('GetByID') + "/" + this.$route.params.id)
               .then(res => {
-                  this.music = res.data;
 
-                  // create player
-                  if (this.music.file_url.indexOf('youtube.com') < 0)
+                  if (res.data != null)
                   {
+                    this.music = res.data;
+
+                    // create player
+                    if (this.music.file_url.indexOf('youtube.com') < 0)
+                    {
                       // mp3 player
                       audiojs.events.ready(function() {
                         var as = audiojs.createAll();
                       });
-                  }
-                  else {
+                    }
+                    else {
                       this.isYoutube = true;
                       this.youtube_id = this.music.file_url.substring(this.music.file_url.lastIndexOf('?v=') + 3);
+                    }
+
+                    // set title
+                    document.title = this.music.music_name + " - " + config.app_name;
+                  }
+                  else {
+                    toastr.error('Get music failed!', 'Error');
+                    window.history.back();
                   }
               })
               .catch(err => {
@@ -70,8 +92,14 @@
             },
             music_url(file_name)
             {
-                url.setController('Music');
-                return url.getURL('MusicFile') + "/" + file_name;
+                if (file_name.indexOf("http") >= 0)
+                {
+                  return file_name;
+                }
+                else {
+                  url.setController('Music');
+                  return url.getURL('MusicFile') + "/" + file_name;
+                }
             }
         }
     }
