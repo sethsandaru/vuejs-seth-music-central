@@ -33,7 +33,7 @@
                   {
                       this.playlist = data;
                       document.title = "Your playlist: " + data.up_name + " - " + config.app_name;
-                      
+
                       if (data.playlist_musics.length > 0)
                       {
                           // init data
