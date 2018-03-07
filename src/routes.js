@@ -11,6 +11,7 @@ import SearchPage from './components/pages/SearchPage.vue';
 import MusicPage from './components/pages/MusicPage.vue';
 import LogoutPage from './components/pages/LogoutPage.vue';
 import MyPlaylistPage from './components/pages/MyPlaylistPage.vue';
+import ListenPlaylistPage from './components/pages/ListenPlaylistPage.vue';
 
 
 // define route
@@ -40,6 +41,9 @@ export const router = new VueRouter({
         },
         {
             path: '/playlist', component: MyPlaylistPage
+        },
+        {
+            path: '/playlist/:id', component: ListenPlaylistPage
         }
     ]
 });

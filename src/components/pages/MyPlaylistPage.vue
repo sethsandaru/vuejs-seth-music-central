@@ -7,7 +7,7 @@
 
         <p v-if="$store.state.user.playlists.length == 0" style="text-align: center;">You don't have any playlists yet!</p>
         <ul class="list-group" v-else>
-            <li class="list-group-item" v-for="item in $store.state.user.playlists">
+            <li class="list-group-item" v-for="item in $store.state.user.playlists" @click="openPlaylist(item.up_id)">
                 <p class="title">{{item.up_name}}</p>
                 <p class="artist">Total songs: {{item.up_total_songs}}</p>
             </li>
@@ -91,6 +91,10 @@
                   .catch(err => {
                     toastr.error("Failed to create playlist, please try again!");
                   });
+            },
+            openPlaylist(id)
+            {
+                window.location = "#/playlist/" + id;
             }
         }
     }
