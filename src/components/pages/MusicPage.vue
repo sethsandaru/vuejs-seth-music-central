@@ -7,7 +7,29 @@
             <iframe width="100%" height="400px" v-bind:src="parse_youtube_url(youtube_id)" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
         <div v-else>
-            <audio v-bind:src="music_url(music.file_url)" preload="auto" style="margin: 0 auto;" />
+          <div id="single-song-player">
+            <img amplitude-song-info="cover_art_url" amplitude-main-song-info="true"/>
+            <div class="bottom-container">
+              <progress class="amplitude-song-played-progress" amplitude-main-song-played-progress="true" id="song-played-progress"></progress>
+
+              <div class="time-container">
+              <span class="current-time">
+                <span class="amplitude-current-minutes" amplitude-main-current-minutes="true"></span>:<span class="amplitude-current-seconds" amplitude-main-current-seconds="true"></span>
+              </span>
+                <span class="duration">
+                <span class="amplitude-duration-minutes" amplitude-main-duration-minutes="true"></span>:<span class="amplitude-duration-seconds" amplitude-main-duration-seconds="true"></span>
+              </span>
+              </div>
+
+              <div class="control-container">
+                <div class="amplitude-play-pause" amplitude-main-play-pause="true" id="play-pause"></div>
+                <div class="meta-container">
+                  <span amplitude-song-info="name" amplitude-main-song-info="true" class="song-name"></span>
+                  <span amplitude-song-info="artist" amplitude-main-song-info="true"></span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="dropdown" v-if="$store.state.user != null">
@@ -89,9 +111,30 @@
                     if (this.music.file_url.indexOf('youtube.com') < 0)
                     {
                       // mp3 player
-                      audiojs.events.ready(function() {
-                        var as = audiojs.createAll();
+                      Amplitude.init({
+                        "bindings": {
+                          37: 'prev',
+                          39: 'next',
+                          32: 'play_pause'
+                        },
+                        "songs": [
+                          {
+                            "name": this.music.music_name,
+                            "artist": this.music.artist,
+                            "album": "",
+                            "url": this.music_url(this.music.file_url),
+                            "cover_art_url": "https://i.imgur.com/5NgZ9rX.jpg"
+                          }
+                        ]
                       });
+
+                      document.getElementById('song-played-progress').addEventListener('click', function( e ){
+                        var offset = this.getBoundingClientRect();
+                        var x = e.pageX - offset.left;
+                        Amplitude.setSongPlayedPercentage( ( parseFloat( x ) / parseFloat( this.offsetWidth) ) * 100 );
+                      });
+
+                      document.addEventListener('beforeunload', this.handlerGoOut)
                     }
                     else {
                       this.isYoutube = true;
@@ -111,6 +154,17 @@
                   window.history.back();
               });
         },
+        mounted()
+        {
+            url.setController("Music");
+            axios.get(url.getURL("AddNewView") + "/" + this.id)
+              .then(res => console.log("Add view ok"));
+        },
+        beforeRouteLeave(to, from, next)
+        {
+            Amplitude.pause();
+            next();
+        },
         methods: {
             parse_youtube_url(id)
             {
@@ -118,6 +172,8 @@
             },
             music_url(file_name)
             {
+                if (file_name == null) return;
+
                 if (file_name.indexOf("http") >= 0)
                 {
                   return file_name;
@@ -158,6 +214,12 @@
             },
             add_music_to_playlist(playlist_id, index)
             {
+                if (this.youtube_id != "")
+                {
+                    toastr.error("This is an youtube video, can't add this to playlist. Sorry!");
+                    return;
+                }
+
                 url.setController('UserPlaylist');
                 axios.post(url.getURL('AddMusicToPlaylist') + "/" + playlist_id, {music_id: this.id})
                   .then(res => {
