@@ -1,9 +1,15 @@
 <template>
     <div class="row" style="padding: 20px 0;" v-if="playlist != null">
-        <h3>Playlist: {{playlist.up_name}}</h3>
-        <h4>Total songs: {{playlist.playlist_musics.length}}</h4>
+        <h3 style="padding-bottom: 10px;">Playlist: {{playlist.up_name}}</h3>
+        <h4 style="padding-bottom: 10px;">Total songs: {{playlist.playlist_musics.length}}</h4>
 
       <div class="row">
+          <ul class="list-group">
+              <li class="list-group-item" v-for="item in playlist.playlist_musics">
+                  <p class="title">{{item.music.music_name}}</p>
+                  <p class="artist">{{item.music.artist}}</p>
+              </li>
+          </ul>
       </div>
     </div>
 </template>
@@ -34,20 +40,6 @@
                       this.playlist = data;
                       document.title = "Your playlist: " + data.up_name + " - " + config.app_name;
 
-                      if (data.playlist_musics.length > 0)
-                      {
-                          // init data
-                          for (var i = 0; i < this.playlist.playlist_musics.length; i++)
-                          {
-                              var item = this.playlist.playlist_musics[i];
-                              item.name = item.music.music_name;
-                              item.artist = item.music.artist;
-                              item.album = "";
-                              item.url = this.music_url(item.music.file_url);
-                              item.cover_art_url = "https://i.imgur.com/5NgZ9rX.jpg";
-                          }
-
-                      }
 
                   }
                   else {
